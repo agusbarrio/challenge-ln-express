@@ -23,7 +23,7 @@ new DbScript(
 
 
             console.log(`Seeding table: ${table}`);
-            const data = JSON.parse(readFileSync(path.join(__dirname, './example-data', `${table}.json`), 'utf-8'));
+            const data = JSON.parse(readFileSync(path.join(__dirname, './exampleData', `${table}.json`), 'utf-8'));
             if (data.length === 0) continue;
 
             const columns = Object.keys(data[0]).join(',');
