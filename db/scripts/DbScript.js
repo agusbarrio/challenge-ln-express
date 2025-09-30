@@ -22,7 +22,11 @@ class DbScript {
             console.log('Connecting to the database...');
             const mysql = require('mysql2/promise');
             const mysqlConnection = await mysql.createConnection({
-                uri: process.env.DB_URI,
+                host: process.env.MYSQL_HOST,
+                port: process.env.MYSQL_PORT,
+                password: process.env.MYSQL_ROOT_PASSWORD,
+                database: process.env.MYSQL_DATABASE,
+                user: 'root',
                 multipleStatements: true
             })
             console.log(`Starting DB script: ${this.name}...`);
