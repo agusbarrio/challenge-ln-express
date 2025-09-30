@@ -1,6 +1,5 @@
-// services/user.service.js
 const ApiError = require("../common/ApiError");
-const userRepository = require("../repositories/users");
+const userRepository = require("../repositories/user");
 const hashService = require("./security/hash")
 const tokenService = require("./security/tokens")
 

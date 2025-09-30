@@ -2,6 +2,7 @@ const authService = require('../services/auth')
 
 class AuthController {
     async login(req, res) {
+        // TODO validar username y password
         const token = await authService.login(req.body)
         res.cookie('token', token, {
             httpOnly: true,
@@ -12,6 +13,7 @@ class AuthController {
         res.status(200).send('login')
     }
     async register(req, res) {
+        // TODO validar username y password
         await authService.register(req.body)
         res.status(201).send('registered');
     }
