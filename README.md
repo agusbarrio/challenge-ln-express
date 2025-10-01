@@ -108,6 +108,7 @@ Ejemplo de `.env`:
 
 ```env
 # APP
+NODE_ENV=development
 PORT=3000
 JWT_SECRET=my_secret
 JWT_EXPIRES_IN=1h
