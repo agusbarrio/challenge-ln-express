@@ -49,12 +49,18 @@ docker-compose exec app node db/scripts/2-seedExampleData/index.js
 docker-compose exec app node db/scripts/3-seedFirstUser/index.js
 ```
 
+5. Acceder a Swagger:
+
+```
+http://localhost:3000/api-docs
+```
+
 ### Resultado:
 
 - Backend en `http://localhost:3000`
 - MySQL con base de datos inicializada y datos de prueba
 - Swagger disponible en `http://localhost:3000/api-docs`
-- Usuario admin: `ln-user` / `ln-password` (o el usuario y contraseña que se haya configurado en el archivo .env)
+- Usuario: `ln-user` / `ln-password` (o el usuario y contraseña que se haya configurado en el archivo .env)
 
 ### Para detener y limpiar:
 
@@ -72,32 +78,38 @@ docker-compose down -v
 cp example.env .env
 ```
 
-2. Instalar dependencias:
+2. Modificar `.env` si es necesario (puertos, credenciales, etc).
+
+3. Instalar dependencias:
 
 ```bash
 npm install
 ```
 
-3. Inicializar la base de datos:
+4. Inicializar la base de datos:
 
 ```bash
 # Crear tablas
 node db/scripts/1-setupDb
+```
 
+```bash
 # Insertar datos de ejemplo
 node db/scripts/2-seedExampleData
+```
 
+```bash
 # Crear primer usuario (opcional)
 node db/scripts/3-seedFirstUser
 ```
 
-4. Ejecutar el backend:
+5. Ejecutar el backend:
 
 ```bash
 npm start
 ```
 
-5. Acceder a Swagger:
+6. Acceder a Swagger:
 
 ```
 http://localhost:3000/api-docs
@@ -183,5 +195,4 @@ Se eligió **Express.js** como framework principal considerando las decisiones d
 - **Flexibilidad total**: Permite trabajar directamente con el esquema existente sin restricciones de framework.
 - **Control granular**: Acceso directo a MySQL sin capas de abstracción que limiten las consultas.
 - **Simplicidad**: Framework ligero que no impone estructura rígida sobre datos predefinidos.
-- **Rendimiento**: Sin overhead de ORM o generadores automáticos innecesarios.
 - **Middleware personalizable**: Implementación directa de autenticación JWT, validación y manejo de errores.
