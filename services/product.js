@@ -13,6 +13,11 @@ class ProductService {
         return { productDetails, relatedProducts }
     }
 
+    async searchProducts(q, limit, offset, sortField, sortOrder) {
+        const products = await productRepository.searchProducts(q, limit, offset, sortField, sortOrder)
+        return products
+    }
+
 }
 
 module.exports = new ProductService();

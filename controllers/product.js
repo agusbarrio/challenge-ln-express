@@ -10,6 +10,27 @@ class ProductController {
         res.status(201).json(result);
     }
 
+    async search(req, res) {
+        const {
+            q,
+            limit,
+            offset,
+            sortField,
+            sortOrder
+        } = req.query;
+
+        // TODO validar datos
+        const result = await productService.searchProducts(
+            q,
+            Number(limit || 10),
+            Number(offset || 0),
+            sortField,
+            sortOrder
+        );
+
+        res.status(200).json(result);
+    }
+
 
 }
 
