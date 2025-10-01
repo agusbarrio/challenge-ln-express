@@ -18,6 +18,11 @@ class ProductService {
         return products
     }
 
+    async listProducts(q, limit, offset, sortField, sortOrder) {
+        const products = await productRepository.listProducts(q, limit, offset, sortField, sortOrder)
+        return products
+    }
+
 }
 
 module.exports = new ProductService();
