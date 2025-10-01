@@ -12,6 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && "body" in err) {
+    throw new ApiError(400, "Invalid JSON")
+  }
+  next(err);
+});
+
 // routes
 app.use("/api", routes);
 
