@@ -4,6 +4,8 @@ const logger = require('morgan');
 const routes = require("./routes");
 const ApiError = require('./common/ApiError');
 const errorMessages = require('./common/constants/errorMessages');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
@@ -11,6 +13,28 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+if (process.env.ENABLE_SWAGGER_DOCUMENTATION === 'true') {
+  const options = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Challenge LN",
+        version: "1.0.0",
+        description: "Catálogo de productos",
+      },
+      servers: [
+        {
+          url: "/api",
+        },
+      ],
+    },
+    apis: ["./routes/*.js"],
+  };
+
+  const swaggerSpec = swaggerJSDoc(options);
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && "body" in err) {
