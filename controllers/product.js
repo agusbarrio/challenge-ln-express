@@ -1,23 +1,29 @@
+const ApiError = require('../common/ApiError');
 const productService = require('../services/product');
 const extractSlugAndId = require('../utils/extractIdFromSlug');
+const Validator = require('../utils/validator');
 
 class ProductController {
 
     async getBySlug(req, res) {
         const { slug, id } = extractSlugAndId(req.params.slug)
-        // TODO validar slug y id
+        if (!slug || !id) throw new ApiError(404)
         const result = await productService.getBySlugAndId(slug, id)
         res.status(201).json(result);
     }
 
     async search(req, res) {
-        const { q, limit, offset, sortField, sortOrder } = req.query;
 
-        // TODO validar datos
+        const q = Validator.isString(req.query.q, { field: "query.q", required: false })
+        const limit = Validator.isNumber(req.query.limit, { field: "query.limit", required: false, min: 1, max: 100, integer: true }) || 10
+        const offset = Validator.isNumber(req.query.offset, { field: "query.offset", required: false, min: 0, integer: true }) || 0
+        const sortField = Validator.isEnum(req.query.sortField, ['price', 'category'], { field: "query.sortField", required: false })
+        const sortOrder = Validator.isEnum(req.query.sortOrder, ['ASC', 'DESC'], { field: "query.sortOrder", required: false })
+
         const result = await productService.searchProducts(
             q,
-            Number(limit || 10),
-            Number(offset || 0),
+            limit,
+            offset,
             sortField,
             sortOrder
         );
@@ -26,11 +32,14 @@ class ProductController {
     }
 
     async listProducts(req, res) {
-        const { limit, offset, sortField, sortOrder } = req.query;
-        // TODO validar datos
+        const limit = Validator.isNumber(req.query.limit, { field: "query.limit", required: false, min: 1, max: 100, integer: true }) || 10
+        const offset = Validator.isNumber(req.query.offset, { field: "query.offset", required: false, min: 0, integer: true }) || 0
+        const sortField = Validator.isEnum(req.query.sortField, ['price', 'category'], { field: "query.sortField", required: false })
+        const sortOrder = Validator.isEnum(req.query.sortOrder, ['ASC', 'DESC'], { field: "query.sortOrder", required: false })
+
         const result = await productService.listProducts(
-            Number(limit || 10),
-            Number(offset || 0),
+            limit,
+            offset,
             sortField,
             sortOrder
         );

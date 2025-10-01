@@ -5,7 +5,7 @@ const tokenService = require("./security/tokens")
 
 
 class AuthService {
-    async login({ username, password: incommingPassword }) {
+    async login(username, incommingPassword) {
 
         const invalidCredentialsError = new ApiError(401, 'Invalid credentials')
         const user = await userRepository.findOneByUsername(username)
@@ -19,7 +19,7 @@ class AuthService {
         return token
     }
 
-    async register({ username, password }) {
+    async register(username, password) {
 
         const exists = await userRepository.exists(username)
         if (exists) {
