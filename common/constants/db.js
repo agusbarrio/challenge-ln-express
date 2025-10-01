@@ -1,0 +1,1 @@
+module.exports.validSortOrders = ["ASC", "DESC"]

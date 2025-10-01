@@ -1,7 +1,12 @@
+
+const { validSortOrders } = require("../common/constants/db");
 const db = require("../db");
 
 //TODO centralizar logica de order y paginación
 class ProductRepository {
+
+    #validSortFields = { "price": "lp.precio", "category": "pc.descripcion" }
+
     async getById(id) {
         const [rows] = await db.query("SELECT * FROM productos WHERE id = ?", [id]);
         return rows.length ? rows[0] : null;
@@ -13,11 +18,9 @@ class ProductRepository {
     }
 
     async searchProducts(q, limit = 10, offset = 0, sortField, sortOrder) {
-        const validSortFields = { "price": "lp.precio", "category": "pc.descripcion" };
-        const safeSortField = Object.keys(validSortFields).includes(sortField) ? validSortFields[sortField] : null;
 
-        const validOrder = ["ASC", "DESC"];
-        const safeSortOrder = validOrder.includes(sortOrder) ? sortOrder : null;
+        const safeSortField = Object.keys(this.#validSortFields).includes(sortField) ? this.#validSortFields[sortField] : null;
+        const safeSortOrder = validSortOrders.includes(sortOrder) ? sortOrder : null;
 
         // Base para la consulta de productos
         let baseQuery = `
@@ -78,14 +81,8 @@ class ProductRepository {
     }
 
     async listProducts(limit = 10, offset = 0, sortField, sortOrder) {
-        const validSortFields = {
-            price: "lp.precio",
-            category: "pc.descripcion"
-        };
-
-        const safeSortField = Object.keys(validSortFields).includes(sortField) ? validSortFields[sortField] : null;
-        const validOrder = ["ASC", "DESC"];
-        const safeSortOrder = validOrder.includes(sortOrder) ? sortOrder : null;
+        const safeSortField = Object.keys(this.#validSortFields).includes(sortField) ? this.#validSortFields[sortField] : null;
+        const safeSortOrder = validSortOrders.includes(sortOrder) ? sortOrder : null;
 
         let baseQuery = `
         FROM productos p
