@@ -28,16 +28,26 @@ class OrderRepository {
             baseQuery += ' AND p.fecha_circulacion <= ?';
             params.push(createdAtMax);
         }
-        // obtener datos paginados
+
         const [rows] = await db.query(
             `SELECT p.*, c.nombre, c.apellido, c.cuit ${baseQuery} ORDER BY p.fecha_circulacion DESC`,
             [...params]
         );
 
-        return {
-            orders: rows,
-        };
+        return { orders: rows };
     }
+
+    async createOrder(orderDate, totalPrice, deliveryType, paymentCondition, customerId, productId, quantity) {
+        const [result] = await db.query(
+            `INSERT INTO pedidos 
+            (fecha_circulacion, precio, clase_entrega, condicion_pago_aplicada, id_cliente, cliente_id, producto_id, cantidad_solicitada)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [orderDate, totalPrice, deliveryType, paymentCondition, customerId, customerId, productId, quantity]
+        );
+        return result.insertId;
+    }
+
+
 }
 
 module.exports = new OrderRepository();

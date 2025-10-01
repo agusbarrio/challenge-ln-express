@@ -133,6 +133,13 @@ class ProductRepository {
             }
         };
     }
+
+    async updateProductQty(productId, quantity) {
+        await db.query(
+            'UPDATE productos SET qty = qty - ? WHERE id = ?',
+            [quantity, productId]
+        );
+    }
 }
 
 
