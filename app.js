@@ -24,18 +24,16 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   console.log(err)
   if (err instanceof ApiError && err.isOperational) {
-    res.status(err.status).json({
-      error: {
-        message: err.message,
-        code: err.status,
-      }
-    });
+    const customError = {
+      message: err.message,
+      code: err.status,
+    }
+    if (err.description) customError.description = err.description
+    res.status(err.status).json(customError);
   } else {
     res.status(500).json({
-      error: {
-        code: 500,
-        message: errorMessages[500]
-      }
+      code: 500,
+      message: errorMessages[500]
     });
   }
 });
