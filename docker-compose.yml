@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # Base de datos MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: challenge-ln-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - challenge-ln-network
+
+  # Aplicación Node.js
+  app:
+    build: .
+    container_name: challenge-ln-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT_ON_HOST:-3000}:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      ENABLE_REGISTRATION: ${ENABLE_REGISTRATION}
+      ENABLE_SWAGGER_DOCUMENTATION: ${ENABLE_SWAGGER_DOCUMENTATION}
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      FIRST_USERNAME: ${FIRST_USERNAME}
+      FIRST_PASSWORD: ${FIRST_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_started
+    networks:
+      - challenge-ln-network
+
+volumes:
+  mysql_data:
+
+networks:
+  challenge-ln-network:
+    driver: bridge

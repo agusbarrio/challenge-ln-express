@@ -1,0 +1,14 @@
+.env
+.env.example
+/node_modules
+/docs
+README.md
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
