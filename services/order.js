@@ -14,11 +14,11 @@ class OrderService {
         if (!product) throw new ApiError(404, 'Product not found');
 
         if (product.qty < quantity) {
-            throw new ApiError(409, 'Insufficient stock');
+            throw new ApiError(422, 'Insufficient stock');
         }
 
         const unitPrice = await priceRepository.getProductPrice(productId);
-        if (unitPrice === null) throw new ApiError(409, 'Price not available');
+        if (unitPrice === null) throw new ApiError(422, 'Price not available');
 
         const totalPrice = unitPrice * quantity;
 
