@@ -32,17 +32,20 @@ cp .env.docker-example .env
 docker-compose up --build -d
 ```
 
-4. **Inicializar la base de datos**:
+4. **Inicializar la base de datos** (Esperar unos segundos para asegurar que el contenedor de MySQL esté listo):
 
 ```bash
 # Crear tablas
 docker-compose exec app node db/scripts/1-setupDb/index.js
+```
 
-
+```bash
 # Insertar datos de ejemplo
 docker-compose exec app node db/scripts/2-seedExampleData/index.js
+```
 
-# Crear primer usuario (opcional si la registración está habilitada)
+```bash
+# Crear primer usuario (opcional)
 docker-compose exec app node db/scripts/3-seedFirstUser/index.js
 ```
 
@@ -51,7 +54,7 @@ docker-compose exec app node db/scripts/3-seedFirstUser/index.js
 - Backend en `http://localhost:3000`
 - MySQL con base de datos inicializada y datos de prueba
 - Swagger disponible en `http://localhost:3000/api-docs`
-- Usuario admin: `admin` / `admin123`
+- Usuario admin: `ln-user` / `ln-password` (o el usuario y contraseña que se haya configurado en el archivo .env)
 
 ### Para detener y limpiar:
 
